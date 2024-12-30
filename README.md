@@ -1,6 +1,4 @@
-Sure, here is a basic `README.md` for your project:
-
-# News Crawl
+# Hot Articles Crawler Script
 
 ## Description
 `news-crawl` is a Python-based web scraping project that uses Scrapy to crawl and extract news articles and their associated comments from various news websites.
