@@ -1,22 +1,13 @@
 # Hot Articles Crawler Script
 
-## Description
-`news-crawl` is a Python-based web scraping project that uses Scrapy to crawl and extract news articles and their associated comments from various news websites.
-
 ## Installation
 
-1. Clone the repository:
-    ```sh
-    git clone https://github.com/yourusername/news-crawl.git
-    cd news-crawl
-    ```
-
-2. Install dependencies using Poetry:
+1. Install dependencies using Poetry:
     ```sh
     poetry install
     ```
 
-3. Init shell
+2. Init shell
     ```sh
     poetry shell
    ```
