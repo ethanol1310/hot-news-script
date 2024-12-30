@@ -1,5 +1,5 @@
-from news_crawl.crawler.base import BaseCrawler
-from news_crawl.spider.spider import VnExpressTopArticleSpider, TuoiTreTopArticleSpider
+from src.crawler.base import BaseCrawler
+from src.spider.spider import VnExpressTopArticleSpider, TuoiTreTopArticleSpider
 
 
 class VnExpressCrawler(BaseCrawler):

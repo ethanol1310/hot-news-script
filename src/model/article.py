@@ -1,4 +1,4 @@
-from news_crawl.logger import logger
+from src.logger import logger
 
 
 class Article:

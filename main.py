@@ -3,10 +3,10 @@ import os
 from datetime import datetime, timedelta
 import time
 import pytz
-from news_crawl.model.article import ArticleTracker
-from news_crawl.crawler.crawler import VnExpressCrawler, TuoiTreCrawler
-from news_crawl.crawler.crawler_manager import CrawlerManager
-from news_crawl.utils.constant import Crawler
+from src.model.article import ArticleTracker
+from src.crawler.crawler import VnExpressCrawler, TuoiTreCrawler
+from src.crawler.crawler_manager import CrawlerManager
+from src.utils.constant import Crawler
 
 
 def get_available_crawlers():

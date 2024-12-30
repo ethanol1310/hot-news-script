@@ -4,10 +4,10 @@ from datetime import datetime, timedelta
 
 import scrapy
 
-from news_crawl.model.article import Article, VnExpressCategory
+from src.model.article import Article, VnExpressCategory
 
-from news_crawl.logger import logger
-from news_crawl.utils.constant import Spider
+from src.logger import logger
+from src.utils.constant import Spider
 
 
 class VnExpressTopArticleSpider(scrapy.Spider):
