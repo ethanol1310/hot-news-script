@@ -3,3 +3,7 @@ env/*
 .vscode/*
 .DS_Store/*
 .scrapy/*
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
