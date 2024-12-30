@@ -38,7 +38,12 @@ flowchart TB
     end
 
     subgraph CoreSystem["Crawl System"]
-        Manager["Crawler Manager"]
+        subgraph Manager["Crawler Manager"]
+            CrawlPolicies["Crawl Policies"]
+           - HTTP Cache
+           - Fake User Agent
+           - Concurrent Requests"]
+        end
         
         subgraph CrawlerLayer["Crawler Layer"]
             direction BT
