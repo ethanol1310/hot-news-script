@@ -21,8 +21,8 @@ class BaseCrawler(ABC):
         "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/",
     }
 
-    def __init__(self, tracker, start_date, end_date, settings_options=None):
-        self.tracker = tracker
+    def __init__(self, ranking, start_date, end_date, settings_options=None):
+        self.ranking = ranking
         self.start_date = start_date
         self.end_date = end_date
         self.settings_options = settings_options or {}
@@ -42,14 +42,14 @@ class BaseCrawler(ABC):
         return CrawlerProcess(settings)
 
     @abstractmethod
-    def get_top_article_spider(self):
+    def get_article_spider(self):
         pass
 
-    def crawl_top_article(self):
-        spider_class = self.get_top_article_spider()
+    def crawl_article(self):
+        spider_class = self.get_article_spider()
         self.process.crawl(
             spider_class,
-            tracker=self.tracker,
+            ranking=self.ranking,
             start_date=self.start_date,
             end_date=self.end_date,
         )

@@ -3,7 +3,7 @@ import os
 from datetime import datetime, timedelta
 import time
 import pytz
-from src.model.article import ArticleTracker
+from src.model.article import ArticleRanking
 from src.crawler.crawler import VnExpressCrawler, TuoiTreCrawler
 from src.crawler.crawler_manager import CrawlerManager
 from src.utils.constant import Crawler
@@ -11,11 +11,11 @@ from src.utils.constant import Crawler
 
 def get_available_crawlers():
     return {
-        Crawler.VNEXPRESS: lambda tracker, start_date, end_date, setting_options: VnExpressCrawler(
-            tracker, start_date, end_date, setting_options
+        Crawler.VNEXPRESS: lambda ranking, start_date, end_date, setting_options: VnExpressCrawler(
+            ranking, start_date, end_date, setting_options
         ),
-        Crawler.TUOITRE: lambda tracker, start_date, end_date, setting_options: TuoiTreCrawler(
-            tracker, start_date, end_date, setting_options
+        Crawler.TUOITRE: lambda ranking, start_date, end_date, setting_options: TuoiTreCrawler(
+            ranking, start_date, end_date, setting_options
         ),
     }
 
@@ -30,7 +30,7 @@ def validate_date(date_str):
 
 
 def print_top_articles(manager, crawler_name, top):
-    top_articles = manager.get_top_articles_by_crawler(crawler_name)
+    top_articles = manager.ranking(crawler_name)
     print(f"\n{'='*50}")
     print(f"Results for {crawler_name}")
     print(f"Total articles: {len(top_articles)}")
@@ -40,7 +40,7 @@ def print_top_articles(manager, crawler_name, top):
         print("No articles found")
         return
 
-    for i, article in enumerate(top_articles[:10], 1):
+    for i, article in enumerate(top_articles[:top], 1):
         print(f"\n{i}. {article.title}")
         print(f"   URL: {article.url}")
         print(f"   Likes: {article.total_likes}")
@@ -49,7 +49,7 @@ def print_top_articles(manager, crawler_name, top):
 def export_top_articles(
     manager, crawler_name, top, start_date, end_date, output_dir="output"
 ):
-    top_articles = manager.get_top_articles_by_crawler(crawler_name)
+    top_articles = manager.ranking(crawler_name)
     start_date_str = start_date.strftime("%Y%m%d")
     end_date_str = end_date.strftime("%Y%m%d")
     output_file = os.path.join(
@@ -123,7 +123,7 @@ def main():
     crawlers = {}
     available_crawler = get_available_crawlers()
     crawlers[crawler_name] = available_crawler[crawler_name](
-        ArticleTracker(), start_date, end_date, settings_options
+        ArticleRanking(), start_date, end_date, settings_options
     )
     print(f"Initialized {crawler_name} crawler")
 
@@ -138,7 +138,7 @@ def main():
         print(f"Selected crawler: {args.crawler}\n")
         start_process_time = time.time()
 
-        manager.run_top_article_crawlers()
+        manager.run_article_crawlers()
         for crawler in crawlers.values():
             crawler.process.start(stop_after_crawl=True)
             end_process_time = time.time()

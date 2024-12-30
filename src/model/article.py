@@ -11,7 +11,7 @@ class Article:
         return self.total_likes < other.total_likes
 
 
-class ArticleTracker:
+class ArticleRanking:
     def __init__(self):
         self.articles = []
 
@@ -19,7 +19,7 @@ class ArticleTracker:
         self.articles.append(article)
         logger.info(f"Added article: {article.url} - Likes: {article.total_likes}")
 
-    def get_top_articles(self):
+    def ranking_by_total_comment_likes(self):
         self.articles.sort(reverse=True, key=lambda x: x.total_likes)
         return self.articles
 

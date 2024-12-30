@@ -7,5 +7,5 @@ class Crawler(StrEnum):
 
 
 class Spider(StrEnum):
-    TOP_ARTICLE_VNEXPRESS = "top_article_vnexpress_spider"
-    TOP_ARTICLE_TUOITRE = "top_article_tuoitre_spider"
+    ARTICLE_VNEXPRESS = "article_vnexpress_spider"
+    ARTICLE_TUOITRE = "article_tuoitre_spider"

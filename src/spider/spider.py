@@ -10,13 +10,13 @@ from src.logger import logger
 from src.utils.constant import Spider
 
 
-class VnExpressTopArticleSpider(scrapy.Spider):
-    name = Spider.TOP_ARTICLE_VNEXPRESS
+class VnExpressSpider(scrapy.Spider):
+    name = Spider.ARTICLE_VNEXPRESS
     allowed_domains = ["vnexpress.net", "usi-saas.vnexpress.net"]
 
-    def __init__(self, tracker, start_date, end_date, *args, **kwargs):
+    def __init__(self, ranking, start_date, end_date, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.tracker = tracker
+        self.ranking = ranking
         self.base_url = "https://vnexpress.net"
         self.comment_api_url = "https://usi-saas.vnexpress.net/index/get"
         self.start_date_unix = int(start_date.timestamp())
@@ -82,7 +82,7 @@ class VnExpressTopArticleSpider(scrapy.Spider):
             data = response.json()
             comments = data.get("data", {}).get("items", [])
             total_likes = sum(comment["userlike"] for comment in comments)
-            self.tracker.add_article(
+            self.ranking.add_article(
                 Article(response.meta["title"], response.meta["url"], total_likes)
             )
         except Exception as e:
@@ -165,13 +165,13 @@ class VnExpressTopArticleSpider(scrapy.Spider):
         ]
 
 
-class TuoiTreTopArticleSpider(scrapy.Spider):
-    name = Spider.TOP_ARTICLE_TUOITRE
+class TuoiTreSpider(scrapy.Spider):
+    name = Spider.ARTICLE_TUOITRE
     allowed_domains = ["tuoitre.vn", "id.tuoitre.vn"]
 
-    def __init__(self, tracker, start_date, end_date, *args, **kwargs):
+    def __init__(self, ranking, start_date, end_date, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.tracker = tracker
+        self.ranking = ranking
         self.base_url = "https://tuoitre.vn"
         self.comment_api_url = "https://id.tuoitre.vn/api/getlist-comment.api"
         self.start_date = start_date
@@ -261,7 +261,7 @@ class TuoiTreTopArticleSpider(scrapy.Spider):
                     },
                 )
             else:
-                self.tracker.add_article(
+                self.ranking.add_article(
                     Article(response.meta["title"], response.meta["url"], total_likes)
                 )
         except Exception as e:
