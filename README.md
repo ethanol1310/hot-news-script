@@ -26,7 +26,7 @@
 ## Project Structure
 
 - `pyproject.toml`: Configuration file for Poetry, including project dependencies.
-
+- Mermaid Diagram - Supported by Claude
 ```mermaid
 flowchart TB
     subgraph UserInterface["User Interface"]
@@ -37,35 +37,26 @@ flowchart TB
         - Top N Articles"]
     end
 
-    subgraph CoreSystem["Core System"]
+    subgraph CoreSystem["Crawl System"]
         Manager["Crawler Manager"]
         
         subgraph CrawlerLayer["Crawler Layer"]
-            direction TB
+            direction BT
             VECrawler["VnExpress Crawler"]
             TTCrawler["TuoiTre Crawler"]
         end
         
         subgraph SpiderLayer["Spider Layer"]
             subgraph NewsSpiders["News Spiders"]
-                direction TB
+                direction RL
                 VESpider["VnExpress Spider"]
                 TTSpider["TuoiTre Spider"]
             end 
             subgraph Parsers["Content Parsers"]
-                direction TB
+                direction RL
                 ArticleParser["Article Parser"]
                 CommentParser["Comment Parser"]
             end
-        end
-        
-        subgraph DataLayer["Data Layer"]
-            direction TB
-            Article["Article
-            - Title
-            - URL
-            - Comments
-            - Total Comment Likes"]
         end
     end
 
@@ -74,22 +65,33 @@ flowchart TB
         ConsoleDisplay
     end
 
-    subgraph RankingEngine["Ranking"]
-        direction TB
-        subgraph Strategies["Ranking Methods"]
-            LikeRanking["Total Comment Like Ranking"]
+    subgraph Model["Model"]
+        subgraph RankingEngine["Arregate"]
+            direction RL
+            subgraph Strategies["Ranking Methods"]
+                LikeRanking["Total Comment Like Ranking"]
+            end
         end
-    end
+        subgraph DataLayer["Data"]
+                direction RL
+                Article["Article
+                - Title
+                - URL
+                - Comments
+                - Total Comment Likes"]
+        end
+    end 
 
     %% Flow connections
     CLI --> Manager
     Manager --> CrawlerLayer
-    CrawlerLayer --> NewsSpiders
+    CrawlerLayer --> SpiderLayer
     NewsSpiders --> Parsers
-    Parsers --> Article
-    Article --> RankingEngine
-    RankingEngine --> OutputSystem
+    SpiderLayer --> Model
     
+    DataLayer --> RankingEngine
+
+    RankingEngine --> OutputSystem
     UserInterface --> OutputSystem
 
     %% Styling
@@ -97,7 +99,7 @@ flowchart TB
     classDef component fill:#bfb,stroke:#333,stroke-width:2px
     classDef interface fill:#fbb,stroke:#333,stroke-width:2px
     
-    class CoreSystem system
-    class RankingEngine component
+    class CoreSystem,Model system
+    class RankingEngine,CrawlerLayer,SpiderLayer,DataLayer component
     class UserInterface,OutputSystem interface
 ```
