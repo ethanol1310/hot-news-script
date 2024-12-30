@@ -39,7 +39,7 @@ flowchart TB
 
     subgraph CoreSystem["Crawl System"]
         subgraph Manager["Crawler Manager"]
-            CrawlPolicies["Crawl Policies"]
+            CrawlPolicies["Crawl Policies"
            - HTTP Cache
            - Fake User Agent
            - Concurrent Requests"]
