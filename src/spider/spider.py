@@ -56,11 +56,10 @@ class VnExpressSpider(scrapy.Spider):
 
     def parse_article(self, response):
         try:
-            comment_section = response.css(
+            object_id = response.css(
                 "span.number_cmt.txt_num_comment.num_cmt_detail::attr(data-objectid)"
             ).get()
-            if comment_section:
-                object_id = comment_section
+            if object_id:
                 object_type = response.css(
                     "span.number_cmt.txt_num_comment.num_cmt_detail::attr(data-objecttype)"
                 ).get()
@@ -74,12 +73,19 @@ class VnExpressSpider(scrapy.Spider):
                             "url": response.meta["url"],
                         },
                     )
+            else:
+                self.ranking.add_article(
+                    Article(response.meta["title"], response.meta["url"], 0)
+                )
         except Exception as e:
             logger.error(message=f"Exception:{e}\n traceback:{traceback.format_exc()}")
 
     def parse_comments(self, response):
         try:
             data = response.json()
+            if data is None:
+                logger.warn(f"Empty response: {response.url}")
+                return
             comments = data.get("data", {}).get("items", [])
             total_likes = sum(comment["userlike"] for comment in comments)
             self.ranking.add_article(
@@ -240,6 +246,9 @@ class TuoiTreSpider(scrapy.Spider):
     def parse_comments(self, response):
         try:
             data = response.json()
+            if data is None:
+                logger.warn(f"Empty response: {response.url}")
+                return
             comments = json.loads(data.get("Data", "[]"))
             total_likes = response.meta["total_likes"] + sum(
                 sum(comment.get("reactions", {}).values()) for comment in comments
