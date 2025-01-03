@@ -81,9 +81,6 @@ def get_date_range(arg_start_date, arg_end_date):
     start_date = start_date.replace(hour=0, minute=0, second=0, microsecond=0)
     end_date = end_date.replace(hour=23, minute=59, second=59, microsecond=999999)
 
-    start_date = timezone_vn.localize(start_date)
-    end_date = timezone_vn.localize(end_date)
-
     return start_date, end_date
 
 
